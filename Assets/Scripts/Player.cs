@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameInput gameInput;
     [SerializeField]
+    private LayerMask countersLayerMask;
+    [SerializeField]
     private float moveSpeed = 5f;
     [SerializeField]
     private float rotateSpeed = 10f;
@@ -14,10 +16,40 @@ public class Player : MonoBehaviour
     private float playerRadius = 0.6f;
     [SerializeField]
     private float playerHeight = 2f;
+    [SerializeField]
+    private float interactDistance = 2f;
 
     private bool isWalking;
+    private Vector3 lastInteractDir;
 
     private void FixedUpdate()
+    {
+        HandleMovement();
+        HandleInteractions();
+    }
+
+    private void HandleInteractions()
+    {
+        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+        Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
+
+        if(moveDir != Vector3.zero)
+        {
+            lastInteractDir = moveDir;
+        }
+
+        bool hasHit = Physics.Raycast(transform.position, lastInteractDir, 
+            out RaycastHit hitInfo, interactDistance, countersLayerMask);
+        if (hasHit)
+        {
+            if (hitInfo.transform.TryGetComponent(out ClearCounter clearCounter))
+            {
+                clearCounter.Interact();
+            }
+        }
+    }
+
+    private void HandleMovement()
     {
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
         Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
@@ -28,7 +60,7 @@ public class Player : MonoBehaviour
         bool canMove = !Physics.CapsuleCast(transform.position,
             rayDistance, playerRadius, moveDir, moveDistance);
 
-        if(!canMove) //Attempt only X movement
+        if (!canMove) //Attempt only X movement
         {
             Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
             canMove = !Physics.CapsuleCast(transform.position,
