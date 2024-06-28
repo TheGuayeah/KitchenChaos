@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public interface IKitchenObjectParent
 {
-
-
-    public Transform GetKitchenObjectFollowTransform();
+    public Transform GetSpawnPoint();
 
     public void SetKitchenObject(KitchenObject kitchenObject);
 

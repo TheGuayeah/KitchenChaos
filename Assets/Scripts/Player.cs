@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : Singleton<Player>, IKitchenObjectParent
@@ -7,7 +6,7 @@ public class Player : Singleton<Player>, IKitchenObjectParent
     public event EventHandler<SelectedCounterChangedEventArgs> OnSelectedCounterChanged;
     public class SelectedCounterChangedEventArgs : EventArgs
     {
-        public ClearCounter selectedCounterChanged;
+        public BaseCounter selectedCounterChanged;
     }
 
     [SerializeField]
@@ -29,7 +28,7 @@ public class Player : Singleton<Player>, IKitchenObjectParent
 
     private bool isWalking;
     private Vector3 lastInteractDir;
-    private ClearCounter selectedCounter;
+    private BaseCounter selectedCounter;
     private KitchenObject kitchenObject;
 
     private void Start()
@@ -65,11 +64,11 @@ public class Player : Singleton<Player>, IKitchenObjectParent
             out RaycastHit hitInfo, interactDistance, countersLayerMask);
         if (hasHit)
         {
-            if (hitInfo.transform.TryGetComponent(out ClearCounter clearCounter))
+            if (hitInfo.transform.TryGetComponent(out BaseCounter baseCounter))
             {
-                if (selectedCounter != clearCounter)
+                if (selectedCounter != baseCounter)
                 {
-                    SetSelectedCounter(clearCounter);
+                    SetSelectedCounter(baseCounter);
                 }
             }
             else
@@ -132,7 +131,7 @@ public class Player : Singleton<Player>, IKitchenObjectParent
         return isWalking;
     }
 
-    private void SetSelectedCounter(ClearCounter kitchenObjectParent)
+    private void SetSelectedCounter(BaseCounter kitchenObjectParent)
     {
         selectedCounter = kitchenObjectParent;
 
@@ -143,7 +142,7 @@ public class Player : Singleton<Player>, IKitchenObjectParent
             });
     }
 
-    public Transform GetKitchenObjectFollowTransform()
+    public Transform GetSpawnPoint()
     {
         return kitchenObjectHoldPoint;
     }

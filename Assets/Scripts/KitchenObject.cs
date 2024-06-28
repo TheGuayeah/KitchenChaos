@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class KitchenObject : MonoBehaviour
@@ -32,7 +30,7 @@ public class KitchenObject : MonoBehaviour
 
         newParent.SetKitchenObject(this);
 
-        transform.SetParent(newParent.GetKitchenObjectFollowTransform());
+        transform.SetParent(newParent.GetSpawnPoint());
         transform.localPosition = Vector3.zero;
     }
 
