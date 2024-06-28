@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8548515445691286902}
   - component: {fileID: 1787602738859599946}
-  - component: {fileID: 1683070467092822655}
+  - component: {fileID: 6709480965864481753}
   m_Layer: 6
   m_Name: ClearCounter
   m_TagString: Untagged
@@ -57,7 +57,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.5, y: 1.5, z: 1.5}
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &1683070467092822655
+--- !u!114 &6709480965864481753
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -71,6 +71,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   kitchenObjectSO: {fileID: 11400000, guid: cb0fad4cc10a7ce45a01e2c06b1a51d8, type: 2}
   counterTopPoint: {fileID: 2455805575009529449}
+  testing: 0
 --- !u!1 &7400803803455362976
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,7 +84,7 @@ GameObject:
   m_Layer: 6
   m_Name: CounterTopPoint
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -227,7 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dda43451bce2de84e8f614fbc7281b3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clearCounter: {fileID: 1683070467092822655}
+  clearCounter: {fileID: 6709480965864481753}
   visualGameObject: {fileID: 5429635350469036199}
 --- !u!4 &83311765361553219 stripped
 Transform:

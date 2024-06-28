@@ -2,7 +2,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Player : Singleton<Player>
+public class Player : Singleton<Player>, IKitchenObjectParent
 {
     public event EventHandler<SelectedCounterChangedEventArgs> OnSelectedCounterChanged;
     public class SelectedCounterChangedEventArgs : EventArgs
@@ -14,6 +14,8 @@ public class Player : Singleton<Player>
     private GameInput gameInput;
     [SerializeField]
     private LayerMask countersLayerMask;
+    [SerializeField]
+    private Transform kitchenObjectHoldPoint;
     [SerializeField]
     private float moveSpeed = 5f;
     [SerializeField]
@@ -28,6 +30,7 @@ public class Player : Singleton<Player>
     private bool isWalking;
     private Vector3 lastInteractDir;
     private ClearCounter selectedCounter;
+    private KitchenObject kitchenObject;
 
     private void Start()
     {
@@ -40,11 +43,11 @@ public class Player : Singleton<Player>
         HandleInteractions();
     }
 
-    private void GameInput_OnInteractAction(object sender, System.EventArgs e)
+    private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
         if (selectedCounter != null)
         {
-            selectedCounter.Interact();
+            selectedCounter.Interact(this);
         }
     }
 
@@ -129,14 +132,39 @@ public class Player : Singleton<Player>
         return isWalking;
     }
 
-    private void SetSelectedCounter(ClearCounter clearCounter)
+    private void SetSelectedCounter(ClearCounter kitchenObjectParent)
     {
-        selectedCounter = clearCounter;
+        selectedCounter = kitchenObjectParent;
 
         OnSelectedCounterChanged?.Invoke(this,
             new SelectedCounterChangedEventArgs
             {
                 selectedCounterChanged = selectedCounter
             });
+    }
+
+    public Transform GetKitchenObjectFollowTransform()
+    {
+        return kitchenObjectHoldPoint;
+    }
+
+    public void SetKitchenObject(KitchenObject newKitchenObject)
+    {
+        kitchenObject = newKitchenObject;
+    }
+
+    public KitchenObject GetKitchenObject()
+    {
+        return kitchenObject;
+    }
+
+    public void ClearKitchenObject()
+    {
+        kitchenObject = null;
+    }
+
+    public bool HasKitchenObject()
+    {
+        return kitchenObject != null;
     }
 }
