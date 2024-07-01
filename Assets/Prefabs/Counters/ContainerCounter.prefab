@@ -270,6 +270,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 317931179763092551}
   m_SourcePrefab: {fileID: 100100000, guid: 9a9137fa2b035d34e881701d2c178192, type: 3}
+--- !u!212 &1552210102561663190 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 4841286013473667211, guid: 9a9137fa2b035d34e881701d2c178192,
+    type: 3}
+  m_PrefabInstance: {fileID: 6243463699938398301}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7571903511285380342 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4589716710238282923, guid: 9a9137fa2b035d34e881701d2c178192,
@@ -400,6 +406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   counterTopPoint: {fileID: 9002677644780194182}
   kitchenObjectSO: {fileID: 11400000, guid: 41d0bac90e257094fa0b02f3de79c257, type: 2}
+  containerContent: {fileID: 1552210102561663190}
 --- !u!4 &2907430039924122265 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8548515445691286902, guid: 771d81b615127894880f7be698d7a3af,

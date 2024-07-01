@@ -7,6 +7,13 @@ public class ContainerCounter : BaseCounter
 
     [SerializeField]
     private KitchenObjectSO kitchenObjectSO;
+    [SerializeField]
+    private SpriteRenderer containerContent;
+
+    private void OnValidate()
+    {
+        containerContent.sprite = kitchenObjectSO.sprite;
+    }
 
     public override void Interact(Player player)
     {
