@@ -178,6 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2902579711371969758}
   - component: {fileID: 9102848903606436300}
+  - component: {fileID: 8796111994570146801}
   - component: {fileID: 4899319494752690198}
   - component: {fileID: 362429322124381190}
   - component: {fileID: 8444578251048092749}
@@ -224,6 +225,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cuttingCounter: {fileID: 8808734373762799222}
   barImage: {fileID: 2418409478659350952}
+--- !u!114 &8796111994570146801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8302540838042129357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb3dd22fd33dd314a8ab4588cadb03d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mode: 2
 --- !u!223 &4899319494752690198
 Canvas:
   m_ObjectHideFlags: 0
