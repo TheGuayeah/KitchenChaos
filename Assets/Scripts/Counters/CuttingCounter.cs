@@ -38,7 +38,8 @@ public class CuttingCounter : BaseCounter
         }
         else //There is a kitchen object here
         {
-            if (!player.HasKitchenObject()) //Player is not carrying anything
+            //Player is not carrying anything AND ingredient is not being cut
+            if (!player.HasKitchenObject() && cuttingProgress == 0)
             {
                 GetKitchenObject().SetKitchenObjectParent(player);
             }
@@ -69,6 +70,7 @@ public class CuttingCounter : BaseCounter
                         KitchenObjectSO output = CutIngredient(ingredient);
                         GetKitchenObject().DestroySelf();
                         KitchenObject.SpawnKitchenObject(output, this);
+                        cuttingProgress = 0;
                     }
                 }
             }
