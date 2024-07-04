@@ -3,25 +3,25 @@ using UnityEngine;
 
 public class ContainerCounterVisual : MonoBehaviour
 {
-    private const string OPEN_CLOSE = "OpenClose";
+   private const string OPEN_CLOSE = "OpenClose";
 
-    [SerializeField]
-    private ContainerCounter containerCounter;
+   [SerializeField]
+   private ContainerCounter containerCounter;
 
-    private Animator animator;
+   private Animator animator;
 
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-    }
+   private void Awake()
+   {
+      animator = GetComponent<Animator>();
+   }
 
-    private void Start()
-    {
-        containerCounter.OnPlayerGrabbedObject += ContainerCounter_OnPlayerGrabbedObject;
-    }
+   private void Start()
+   {
+      containerCounter.OnPlayerGrabbedObject += ContainerCounter_OnPlayerGrabbedObject;
+   }
 
-    private void ContainerCounter_OnPlayerGrabbedObject(object sender, EventArgs e)
-    {
-        animator.SetTrigger(OPEN_CLOSE);
-    }
+   private void ContainerCounter_OnPlayerGrabbedObject(object sender, EventArgs e)
+   {
+      animator.SetTrigger(OPEN_CLOSE);
+   }
 }
