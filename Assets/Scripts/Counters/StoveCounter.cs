@@ -126,24 +126,45 @@ public class StoveCounter : BaseCounter, IHasProgress
         }
         else //There is a kitchen object here
         {
+            if (player.HasKitchenObject()) //Player is carrying something
+            {
+                PlateKitchenObject plate = null;
+                if (player.GetKitchenObject().TryGetPlate(out plate))
+                {
+                    bool ingredientAdded = plate.TryAddIngredient(
+                        GetKitchenObject().GetKitchenObjectSO());
+
+                    if (ingredientAdded)
+                    {
+                        GetKitchenObject().DestroySelf();
+
+                        SwitchOffStove();
+                    }
+                }
+            }
             //Player is not carrying anything AND stove is not cooking
             if (!player.HasKitchenObject() && state != State.Cooking)
             {
                 GetKitchenObject().SetKitchenObjectParent(player);
 
-                state = State.Idle;
-
-                OnStateChanged?.Invoke(this, new OnStateChangedEventArgs
-                {
-                    stateChanged = state
-                });
-
-                OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
-                {
-                    progressNormalized = 0f
-                });
+                SwitchOffStove();
             }
         }
+    }
+
+    private void SwitchOffStove()
+    {
+        state = State.Idle;
+
+        OnStateChanged?.Invoke(this, new OnStateChangedEventArgs
+        {
+            stateChanged = state
+        });
+
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+        {
+            progressNormalized = 0f
+        });
     }
 
     private bool CanFryIngredient(KitchenObjectSO input)
