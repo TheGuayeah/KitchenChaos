@@ -36,4 +36,9 @@ public class PlateKitchenObject : KitchenObject
          return true;
       }
    }
+
+   public List<KitchenObjectSO> GetIngredientsOnPlate()
+   {
+      return ingredientsOnPlateSO;
+   }
 }
