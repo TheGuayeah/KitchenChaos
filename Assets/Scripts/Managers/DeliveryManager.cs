@@ -17,6 +17,7 @@ public class DeliveryManager : Singleton<DeliveryManager>
    private float spwanRecipeTimer;
    private float spwanRecipeTimerMax = 4f;
    private int maxWaitingRecipes = 4;
+   private int successfulDeliveries;
 
    private new void Awake()
    {
@@ -65,6 +66,7 @@ public class DeliveryManager : Singleton<DeliveryManager>
             }
             if (plateContentMatchesRecipe)
             {
+               successfulDeliveries++;
                commandsList.RemoveAt(i);
 
                OnCommandCompleted?.Invoke(this, EventArgs.Empty);
@@ -80,5 +82,10 @@ public class DeliveryManager : Singleton<DeliveryManager>
    public List<RecipeSO> GetCommandsList()
    {
       return commandsList;
+   }
+
+   public int GetSuccessfulDeliveries()
+   {
+      return successfulDeliveries;
    }
 }

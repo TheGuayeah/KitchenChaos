@@ -16,7 +16,8 @@ public class GameManager : Singleton<GameManager>
    private State state;
    private float lobbyTimer = 1f;
    private float countdownTimer = 3f;
-   private float palyingTimer = 10f;
+   private float palyingTimer;
+   private float palyingTimerMax = 10f;
 
    private new void Awake()
    {
@@ -41,6 +42,7 @@ public class GameManager : Singleton<GameManager>
             if (countdownTimer < 0f)
             {
                state = State.Playing;
+               palyingTimer = palyingTimerMax;
                OnStateChanged?.Invoke(this, EventArgs.Empty);
             }
             break;
@@ -71,8 +73,18 @@ public class GameManager : Singleton<GameManager>
       return state == State.Countdown;
    }
 
+   public bool IsGameOver()
+   {
+      return state == State.GameOver;
+   }
+
    public float GetCountdownTimer()
    {
       return countdownTimer;
+   }
+
+   public float GetPlayingTimerNormalized()
+   {
+      return 1 - (palyingTimer / palyingTimerMax);
    }
 }
