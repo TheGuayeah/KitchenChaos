@@ -7,6 +7,8 @@ public class DeliveryManager : Singleton<DeliveryManager>
 {
    public event EventHandler OnCommandSpawned;
    public event EventHandler OnCommandCompleted;
+   public event EventHandler OnCommandSucceded;
+   public event EventHandler OnCommandFailed;
 
    [SerializeField]
    private RecipeListSO recipeListSO;
@@ -66,10 +68,13 @@ public class DeliveryManager : Singleton<DeliveryManager>
                commandsList.RemoveAt(i);
 
                OnCommandCompleted?.Invoke(this, EventArgs.Empty);
+               OnCommandSucceded?.Invoke(this, EventArgs.Empty);
                return;
             }
          }
       }
+
+      OnCommandFailed?.Invoke(this, EventArgs.Empty);
    }
 
    public List<RecipeSO> GetCommandsList()

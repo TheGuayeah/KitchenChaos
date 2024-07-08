@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Player : Singleton<Player>, IKitchenObjectParent
 {
+   public event EventHandler OnPickedSomething;
    public event EventHandler<SelectedCounterChangedEventArgs> OnSelectedCounterChanged;
    public class SelectedCounterChangedEventArgs : EventArgs
    {
@@ -159,6 +160,11 @@ public class Player : Singleton<Player>, IKitchenObjectParent
    public void SetKitchenObject(KitchenObject newKitchenObject)
    {
       kitchenObject = newKitchenObject;
+
+      if(newKitchenObject != null)
+      {
+         OnPickedSomething?.Invoke(this, EventArgs.Empty);
+      }
    }
 
    public KitchenObject GetKitchenObject()
