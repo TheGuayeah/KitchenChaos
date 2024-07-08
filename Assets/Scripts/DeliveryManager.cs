@@ -1,8 +1,13 @@
+using Random = UnityEngine.Random;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DeliveryManager : Singleton<DeliveryManager>
 {
+   public event EventHandler OnCommandSpawned;
+   public event EventHandler OnCommandCompleted;
+
    [SerializeField]
    private RecipeListSO recipeListSO;
 
@@ -11,8 +16,9 @@ public class DeliveryManager : Singleton<DeliveryManager>
    private float spwanRecipeTimerMax = 4f;
    private int maxWaitingRecipes = 4;
 
-   private void Start()
+   private new void Awake()
    {
+      base.Awake();
       commandsList = new List<RecipeSO>();
    }
 
@@ -27,8 +33,10 @@ public class DeliveryManager : Singleton<DeliveryManager>
          if (commandsList.Count < maxWaitingRecipes)
          {
             RecipeSO command = recipeListSO.recipes[Random.Range(0, recipeListSO.recipes.Count)];
-            Debug.Log(command.name);
+            
             commandsList.Add(command);
+
+            OnCommandSpawned?.Invoke(this, EventArgs.Empty);
          }         
       }
    }
@@ -55,13 +63,17 @@ public class DeliveryManager : Singleton<DeliveryManager>
             }
             if (plateContentMatchesRecipe)
             {
-               Debug.Log("Recipe Delivered");
                commandsList.RemoveAt(i);
+
+               OnCommandCompleted?.Invoke(this, EventArgs.Empty);
                return;
             }
          }
       }
+   }
 
-      Debug.Log("Player delivered the WRONG recipe!");
+   public List<RecipeSO> GetCommandsList()
+   {
+      return commandsList;
    }
 }
