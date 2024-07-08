@@ -41,4 +41,9 @@ public class PlateKitchenObject : KitchenObject
    {
       return ingredientsOnPlateSO;
    }
+
+   public bool TryFindIngredientOnPlate(KitchenObjectSO ingredient)
+   {
+      return ingredientsOnPlateSO.Contains(ingredient);
+   }
 }
