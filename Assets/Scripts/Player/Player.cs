@@ -110,7 +110,11 @@ public class Player : Singleton<Player>, IKitchenObjectParent
       if (!canMove) //Attempt only X movement
       {
          Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
-         canMove = moveDir.x != 0 && !Physics.CapsuleCast(transform.position,
+         float stickDeadzone = GameInput.Instance.GetStickDeadzone();
+
+         bool isOutsideDeadzoneX = moveDir.x < -stickDeadzone || moveDir.x > stickDeadzone;
+         
+         canMove = isOutsideDeadzoneX && !Physics.CapsuleCast(transform.position,
              rayDistance, playerRadius, moveDirX, moveDistance);
 
          if (canMove) //Can move only X
@@ -120,7 +124,8 @@ public class Player : Singleton<Player>, IKitchenObjectParent
          else //Attempt only Z movement
          {
             Vector3 moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
-            canMove = moveDir.z != 0 && !Physics.CapsuleCast(transform.position,
+            bool isOutsideDeadzoneZ = moveDir.z < -stickDeadzone || moveDir.z > stickDeadzone;
+            canMove = isOutsideDeadzoneZ && !Physics.CapsuleCast(transform.position,
                 rayDistance, playerRadius, moveDirZ, moveDistance);
 
             if (canMove) //Can move only Z

@@ -10,6 +10,33 @@ public class OptionsUI : Singleton<OptionsUI>
    [SerializeField]
    private Slider musicSlider;
 
+   #region BUTTONS
+   [Header("Buttons")]
+   [SerializeField]
+   private Button closeButton;
+   [SerializeField]
+   private Button moveUpButton;
+   [SerializeField]
+   private Button moveDownButton;
+   [SerializeField]
+   private Button moveLeftButton;
+   [SerializeField]
+   private Button moveRightButton;
+   [SerializeField]
+   private Button interactButton;
+   [SerializeField]
+   private Button interactAltButton;
+   [SerializeField]
+   private Button pauseButton;
+   [SerializeField]
+   private Button gamepadInteractButton;
+   [SerializeField]
+   private Button gamepadInteractAltButton;
+   [SerializeField]
+   private Button gamepadPauseButton;
+   #endregion
+
+   #region BUTTON_TEXTS
    [Header("Texts")]
    [SerializeField]
    private TextMeshProUGUI sfxText;
@@ -29,24 +56,13 @@ public class OptionsUI : Singleton<OptionsUI>
    private TextMeshProUGUI interactAltText;
    [SerializeField]
    private TextMeshProUGUI pauseText;
-
-   [Header("Buttons")]
    [SerializeField]
-   private Button closeButton;
+   private TextMeshProUGUI gamepadInteractText;
    [SerializeField]
-   private Button moveUpButton;
+   private TextMeshProUGUI gamepadInteractAltText;
    [SerializeField]
-   private Button moveDownButton;
-   [SerializeField]
-   private Button moveLeftButton;
-   [SerializeField]
-   private Button moveRightButton;
-   [SerializeField]
-   private Button interactButton;
-   [SerializeField]
-   private Button interactAltButton;
-   [SerializeField]
-   private Button pauseButton;
+   private TextMeshProUGUI gamepadPauseText;
+   #endregion
 
    private new void Awake()
    {
@@ -107,6 +123,21 @@ public class OptionsUI : Singleton<OptionsUI>
       {
          GameInput.Instance.RebindBinding(GameInput.Binding.Pause, UpdateVisual);
       });
+
+      gamepadInteractButton.onClick.AddListener(() =>
+      {
+         GameInput.Instance.RebindBinding(GameInput.Binding.Gamepad_Interact, UpdateVisual);
+      });
+
+      gamepadInteractAltButton.onClick.AddListener(() =>
+      {
+         GameInput.Instance.RebindBinding(GameInput.Binding.Gamepad_InteractAlternate, UpdateVisual);
+      });
+
+      gamepadPauseButton.onClick.AddListener(() =>
+      {
+         GameInput.Instance.RebindBinding(GameInput.Binding.Gamepad_Pause, UpdateVisual);
+      });
    }
 
    private void Start()
@@ -135,11 +166,16 @@ public class OptionsUI : Singleton<OptionsUI>
       interactText.text = GameInput.Instance.GetBindingText(GameInput.Binding.Interact);
       interactAltText.text = GameInput.Instance.GetBindingText(GameInput.Binding.Interact_Alternate);
       pauseText.text = GameInput.Instance.GetBindingText(GameInput.Binding.Pause);
+
+      gamepadInteractText.text = GameInput.Instance.GetBindingText(GameInput.Binding.Gamepad_Interact);
+      gamepadInteractAltText.text = GameInput.Instance.GetBindingText(GameInput.Binding.Gamepad_InteractAlternate);
+      gamepadPauseText.text = GameInput.Instance.GetBindingText(GameInput.Binding.Gamepad_Pause);
    }
 
    public void Show()
    {
       gameObject.SetActive(true);
+      sfxSlider.Select();
    }
 
    private void Hide()

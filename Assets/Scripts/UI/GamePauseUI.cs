@@ -50,6 +50,7 @@ public class GamePauseUI : Singleton<GamePauseUI>
    public void Show()
    {
       gameObject.SetActive(true);
+      resumeButton.Select();
    }
 
    private void Hide()

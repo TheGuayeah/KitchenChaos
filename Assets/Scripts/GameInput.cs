@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,7 +19,10 @@ public class GameInput : Singleton<GameInput>
       Move_Right,
       Interact,
       Interact_Alternate,
-      Pause
+      Pause,
+      Gamepad_Interact,
+      Gamepad_InteractAlternate,
+      Gamepad_Pause
    }
 
    private PlayerInputActions playerInputActions;
@@ -92,6 +96,12 @@ public class GameInput : Singleton<GameInput>
             return playerInputActions.Player.InteractAlternate.bindings[0].ToDisplayString();
          case Binding.Pause:
             return playerInputActions.Player.Pause.bindings[0].ToDisplayString();
+         case Binding.Gamepad_Interact:
+            return playerInputActions.Player.Interact.bindings[1].ToDisplayString();
+         case Binding.Gamepad_InteractAlternate:
+            return playerInputActions.Player.InteractAlternate.bindings[1].ToDisplayString();
+         case Binding.Gamepad_Pause:
+            return playerInputActions.Player.Pause.bindings[1].ToDisplayString();
          default:
             return string.Empty;
       }
@@ -135,6 +145,18 @@ public class GameInput : Singleton<GameInput>
             inputAction = playerInputActions.Player.Pause;
             bindingIndex = 0;
             break;
+         case Binding.Gamepad_Interact:
+            inputAction = playerInputActions.Player.Interact;
+            bindingIndex = 1;
+            break;
+         case Binding.Gamepad_InteractAlternate:
+            inputAction = playerInputActions.Player.InteractAlternate;
+            bindingIndex = 1;
+            break;
+         case Binding.Gamepad_Pause:
+            inputAction = playerInputActions.Player.Pause;
+            bindingIndex = 1;
+            break;
       }
 
       inputAction.PerformInteractiveRebinding(bindingIndex)
@@ -150,5 +172,13 @@ public class GameInput : Singleton<GameInput>
             PlayerPrefs.Save();            
          })
          .Start();
+   }
+
+   public float GetStickDeadzone()
+   {
+      string processors = playerInputActions.asset.FindActionMap("Player")
+         .FindAction("Move").bindings[10].processors;
+
+      return float.Parse(processors.Split('=')[1].TrimEnd(')'), CultureInfo.InvariantCulture);
    }
 }
