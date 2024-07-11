@@ -1,10 +1,21 @@
 using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class GameStartCountdownUI : MonoBehaviour
 {
+   private const string NUMBER_POPUP = "NumberPopup";
+
    [SerializeField]
    private TextMeshProUGUI countdownText;
+
+   private Animator animator;
+   private int lastCountdownNumber;
+
+   private void Awake()
+   {
+      animator = GetComponent<Animator>();
+   }
 
    private void Start()
    {
@@ -16,7 +27,15 @@ public class GameStartCountdownUI : MonoBehaviour
    {
       if (GameManager.Instance.IsCountdownActive())
       {
-         countdownText.text = GameManager.Instance.GetCountdownTimer().ToString("F0");
+         int coundownNumber = Mathf.CeilToInt(GameManager.Instance.GetCountdownTimer());
+         countdownText.text = coundownNumber.ToString("F0");
+
+         if(lastCountdownNumber != coundownNumber)
+         {
+            lastCountdownNumber = coundownNumber;
+            animator.SetTrigger(NUMBER_POPUP);
+            SoundManager.Instance.PlayCountdownSound();
+         }
       }
    }
 

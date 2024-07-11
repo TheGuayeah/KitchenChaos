@@ -71,9 +71,14 @@ public class SoundManager : Singleton<SoundManager>
       AudioSource.PlayClipAtPoint(audioClip, position, volumeMultiplier * volume);
    }
 
-   public void PlayFootstepsSound(Vector3 position, float volumeMultiplier = 1f)
+   public void PlayFootstepsSound(Vector3 position)
    {
-      PlaySound(audioClipRefsSO.footStep, position, volumeMultiplier * volume);
+      PlaySound(audioClipRefsSO.footStep, position, volume);
+   }
+
+   public void PlayCountdownSound()
+   {
+      PlaySound(audioClipRefsSO.footStep, Vector3.zero, volume);
    }
 
    public void ChangeVolume(float newVolume)
