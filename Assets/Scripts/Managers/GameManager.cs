@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static UnityEditorInternal.VersionControl.ListControl;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -15,17 +16,20 @@ public class GameManager : Singleton<GameManager>
       GameOver
    }
 
+   [SerializeField]
+   private float palyingTimerMax = 60f;
+
    private State state;
+   private State lastState;
    private float lobbyTimer = 1f;
    private float countdownTimer = 3f;
    private float palyingTimer;
-   private float palyingTimerMax = 10f;
-   private bool isGamePaused;
 
    private new void Awake()
    {
       base.Awake();
       state = State.Lobby;
+      lastState = state;
    }
 
    private void Start()
@@ -46,6 +50,7 @@ public class GameManager : Singleton<GameManager>
             lobbyTimer -= Time.deltaTime;
             if(lobbyTimer < 0f)
             {
+               lastState = state;
                state = State.Countdown;
                OnStateChanged?.Invoke(this, EventArgs.Empty);
             }
@@ -54,6 +59,7 @@ public class GameManager : Singleton<GameManager>
             countdownTimer -= Time.deltaTime;
             if (countdownTimer < 0f)
             {
+               lastState = state;
                state = State.Playing;
                palyingTimer = palyingTimerMax;
                OnStateChanged?.Invoke(this, EventArgs.Empty);
@@ -63,15 +69,17 @@ public class GameManager : Singleton<GameManager>
             palyingTimer -= Time.deltaTime;
             if (palyingTimer < 0f)
             {
+               lastState = state;
                state = State.GameOver;
                OnStateChanged?.Invoke(this, EventArgs.Empty);
             }
             break;
          case State.Paused:
-            
+
             break;
          case State.GameOver:
-            
+            lastState = state;
+
             break;
       }
    }
@@ -79,6 +87,12 @@ public class GameManager : Singleton<GameManager>
    public bool IsGamePlaying()
    {
       return state == State.Playing;
+   }
+
+
+   public bool IsGamePaused()
+   {
+      return state == State.Paused;
    }
 
    public bool IsCountdownActive()
@@ -103,16 +117,19 @@ public class GameManager : Singleton<GameManager>
 
    public void TogglePauseGame()
    {
-      isGamePaused = !isGamePaused;
-      if (isGamePaused)
+      if (state == State.Paused)
       {
-         Time.timeScale = 0f;
-         OnGamePaused?.Invoke(this, EventArgs.Empty);
+         state = lastState;
+         lastState = State.Paused;
+         OnStateChanged?.Invoke(this, EventArgs.Empty);
+         OnGameUnpaused?.Invoke(this, EventArgs.Empty);
       }
       else
       {
-         Time.timeScale = 1f;
-         OnGameUnpaused?.Invoke(this, EventArgs.Empty);
+         lastState = state;
+         state = State.Paused;
+         OnStateChanged?.Invoke(this, EventArgs.Empty);
+         OnGamePaused?.Invoke(this, EventArgs.Empty);
       }
    }
 }

@@ -17,16 +17,9 @@ public class PlatesCounter : BaseCounter
 
    private void Update()
    {
-      spawnPlateTimer += Time.deltaTime;
-      if (spawnPlateTimer > spawnTime)
+      if (GameManager.Instance.IsGamePlaying())
       {
-         spawnPlateTimer = 0f;
-
-         if (platesAmmount < maxPlates)
-         {
-            platesAmmount++;
-            OnPlateSpawned?.Invoke(this, EventArgs.Empty);
-         }
+         SpawnPlates();
       }
    }
 
@@ -39,6 +32,21 @@ public class PlatesCounter : BaseCounter
             platesAmmount--;
             KitchenObject.SpawnKitchenObject(plateSO, player);
             OnPlateRemoved?.Invoke(this, EventArgs.Empty);
+         }
+      }
+   }
+
+   private void SpawnPlates()
+   {
+      spawnPlateTimer += Time.deltaTime;
+      if (spawnPlateTimer > spawnTime)
+      {
+         spawnPlateTimer = 0f;
+
+         if (platesAmmount < maxPlates)
+         {
+            platesAmmount++;
+            OnPlateSpawned?.Invoke(this, EventArgs.Empty);
          }
       }
    }

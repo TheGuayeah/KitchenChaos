@@ -14,9 +14,9 @@ public class DeliveryManager : Singleton<DeliveryManager>
    private RecipeListSO recipeListSO;
 
    private List<RecipeSO> commandsList;
-   private float spwanRecipeTimer;
-   private float spwanRecipeTimerMax = 4f;
-   private int maxWaitingRecipes = 4;
+   private float spwanCommandTimer;
+   private float spwanCommandTimerMax = 4f;
+   private int maxWaitingCommands = 4;
    private int successfulDeliveries;
 
    private new void Awake()
@@ -27,20 +27,28 @@ public class DeliveryManager : Singleton<DeliveryManager>
 
    private void Update()
    {
-      spwanRecipeTimer -= Time.deltaTime;
-
-      if (spwanRecipeTimer <= 0f)
+      if (GameManager.Instance.IsGamePlaying())
       {
-         spwanRecipeTimer = spwanRecipeTimerMax;
+         SpawnCommands();
+      }
+   }
 
-         if (commandsList.Count < maxWaitingRecipes)
+   private void SpawnCommands()
+   {
+      spwanCommandTimer -= Time.deltaTime;
+
+      if (spwanCommandTimer <= 0f)
+      {
+         spwanCommandTimer = spwanCommandTimerMax;
+
+         if (commandsList.Count < maxWaitingCommands)
          {
             RecipeSO command = recipeListSO.recipes[Random.Range(0, recipeListSO.recipes.Count)];
-            
+
             commandsList.Add(command);
 
             OnCommandSpawned?.Invoke(this, EventArgs.Empty);
-         }         
+         }
       }
    }
 

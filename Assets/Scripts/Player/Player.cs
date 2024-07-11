@@ -104,7 +104,9 @@ public class Player : Singleton<Player>, IKitchenObjectParent
 
       float moveDistance = moveSpeed * Time.deltaTime;
 
-      bool canMove = !Physics.CapsuleCast(transform.position,
+      bool isGamePaused = GameManager.Instance.IsGamePaused();
+
+      bool canMove = !isGamePaused && !Physics.CapsuleCast(transform.position,
           rayDistance, playerRadius, moveDir, moveDistance);
 
       if (!canMove) //Attempt only X movement
@@ -114,8 +116,9 @@ public class Player : Singleton<Player>, IKitchenObjectParent
 
          bool isOutsideDeadzoneX = moveDir.x < -stickDeadzone || moveDir.x > stickDeadzone;
          
-         canMove = isOutsideDeadzoneX && !Physics.CapsuleCast(transform.position,
-             rayDistance, playerRadius, moveDirX, moveDistance);
+         canMove = !isGamePaused && isOutsideDeadzoneX &&
+            !Physics.CapsuleCast(transform.position,
+            rayDistance, playerRadius, moveDirX, moveDistance);
 
          if (canMove) //Can move only X
          {
@@ -125,8 +128,9 @@ public class Player : Singleton<Player>, IKitchenObjectParent
          {
             Vector3 moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
             bool isOutsideDeadzoneZ = moveDir.z < -stickDeadzone || moveDir.z > stickDeadzone;
-            canMove = isOutsideDeadzoneZ && !Physics.CapsuleCast(transform.position,
-                rayDistance, playerRadius, moveDirZ, moveDistance);
+            canMove = !isGamePaused && isOutsideDeadzoneZ && 
+               !Physics.CapsuleCast(transform.position,
+               rayDistance, playerRadius, moveDirZ, moveDistance);
 
             if (canMove) //Can move only Z
             {
@@ -139,7 +143,7 @@ public class Player : Singleton<Player>, IKitchenObjectParent
          transform.position += moveDistance * moveDir;
       }
 
-      isWalking = moveDir != Vector3.zero;
+      isWalking = moveDir != Vector3.zero && !isGamePaused;
 
       transform.forward = Vector3.Slerp(
           transform.forward, moveDir, rotateSpeed * Time.deltaTime);
@@ -147,7 +151,7 @@ public class Player : Singleton<Player>, IKitchenObjectParent
 
    public bool IsWalking()
    {
-      return isWalking;
+      return isWalking && !GameManager.Instance.IsGamePaused();
    }
 
    private void SetSelectedCounter(BaseCounter kitchenObjectParent)
